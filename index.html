@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divine Soul | Spiritual & Meditation Centre</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: Arial, sans-serif; color: #26352e;
+      background: linear-gradient(135deg, #f4f1e7, #e2eee4);
+    }
+    header {
+      text-align: center; padding: 32px 16px; color: white;
+      background: linear-gradient(120deg, #244b3d, #6c8c68);
+    }
+    header h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 38px); }
+    header p { margin: 0; font-size: 16px; }
+    nav { background: #18382d; padding: 12px; text-align: center; }
+    nav a { color: white; text-decoration: none; margin: 0 14px; font-weight: bold; }
+    nav a:hover { color: #e7d7a5; }
+    .hero { text-align: center; padding: 34px 16px 20px; }
+    .hero h2 { color: #315a46; font-size: 28px; margin-bottom: 10px; }
+    .hero p { max-width: 680px; margin: auto; line-height: 1.6; }
+    .container {
+      background: white; width: min(90%, 650px); margin: 24px auto;
+      padding: 26px; border-radius: 16px; box-shadow: 0 8px 25px #26352e1c;
+    }
+    .container h2 { color: #315a46; text-align: center; margin-top: 0; }
+    label { display: block; margin: 14px 0 6px; font-weight: bold; }
+    input, select {
+      width: 100%; padding: 12px; border: 1px solid #cbd8cc;
+      border-radius: 8px; font-size: 15px; background: #fbfcfa;
+    }
+    button {
+      display: block; margin: 20px auto 0; padding: 12px 24px;
+      border: none; border-radius: 8px; background: #315a46;
+      color: white; font-size: 16px; cursor: pointer;
+    }
+    button:hover { background: #203f31; }
+    #result {
+      display: none; margin-top: 22px; padding: 18px;
+      background: #edf5eb; border-left: 5px solid #6c8c68;
+      border-radius: 8px; line-height: 1.7;
+    }
+    #timer { font-size: 30px; text-align: center; font-weight: bold; color: #315a46; margin-top: 10px; }
+    .tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; width: min(90%, 900px); margin: 24px auto 40px; }
+    .tip { background: #ffffffc9; border-radius: 12px; padding: 18px; text-align: center; }
+    .tip h3 { color: #315a46; margin-top: 0; }
+    footer { background: #18382d; color: white; text-align: center; padding: 18px; margin-top: 35px; }
+    @media (max-width: 500px) { nav a { display: inline-block; margin: 6px 8px; } .container { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>☘ Divine Soul Meditation Centre</h1>
+    <p>Find peace within. Breathe, relax, and reconnect with yourself.</p>
+  </header>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#sessions">Meditation</a>
+    <a href="#tips">Mindfulness Tips</a>
+  </nav>
+
+  <section class="hero" id="home">
+    <h2>Your Journey to Inner Peace</h2>
+    <p>Take a mindful pause from your busy day. Choose a meditation session, set your duration, and give yourself a few quiet moments to restore calm and focus.</p>
+  </section>
+
+  <main class="container" id="sessions">
+    <h2>Plan Your Meditation Session</h2>
+    <p style="text-align:center">Enter your preferences to begin your peaceful session.</p>
+
+    <label for="username">Your Name</label>
+    <input type="text" id="username" placeholder="Enter your name">
+
+    <label for="session">Choose a Meditation Type</label>
+    <select id="session">
+      <option value="">Select a session</option>
+      <option value="Mindfulness Meditation">Mindfulness Meditation</option>
+      <option value="Breathing Meditation">Breathing Meditation</option>
+      <option value="Guided Relaxation">Guided Relaxation</option>
+      <option value="Spiritual Reflection">Spiritual Reflection</option>
+    </select>
+
+    <label for="duration">Duration</label>
+    <select id="duration">
+      <option value="">Select duration</option>
+      <option value="1">1 minute (demo)</option>
+      <option value="5">5 minutes</option>
+      <option value="10">10 minutes</option>
+      <option value="15">15 minutes</option>
+    </select>
+
+    <label for="level">Experience Level</label>
+    <select id="level">
+      <option value="">Select your level</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+
+    <button id="startBtn">Begin Meditation</button>
+    <div id="result"></div>
+    <div id="timer"></div>
+    <button id="stopBtn" style="display:none;background:#8a5a44">End Session</button>
+  </main>
+
+  <section class="tips" id="tips">
+    <div class="tip"><h3>🌿 Breathe Slowly</h3><p>Take gentle, steady breaths and relax your shoulders.</p></div>
+    <div class="tip"><h3>🧘 Stay Present</h3><p>Notice your thoughts without judging them. Return your attention to your breath.</p></div>
+    <div class="tip"><h3>☀ Be Patient</h3><p>Start with a few minutes daily and build a routine that suits you.</p></div>
+  </section>
+
+  <footer>
+    <p>Divine Soul Meditation Centre</p>
+    <p>Experiment 7 | Web Technology Lab</p>
+  </footer>
+
+  <script>
+    let countdown = null;
+    let remaining = 0;
+
+    $("#startBtn").on("click", function () {
+      const name = $("#username").val().trim();
+      const session = $("#session").val();
+      const duration = Number($("#duration").val());
+      const level = $("#level").val();
+
+      if (!name || !session || !duration || !level) {
+        alert("Please fill in all the details before starting.");
+        return;
+      }
+
+      clearInterval(countdown);
+      remaining = duration * 60;
+      $("#result").html(
+        "<h3>Your Meditation Plan</h3>" +
+        "<p><b>Name:</b> " + $("<div>").text(name).html() + "</p>" +
+        "<p><b>Session:</b> " + session + "</p>" +
+        "<p><b>Duration:</b> " + duration + " minute(s)</p>" +
+        "<p><b>Experience:</b> " + level + "</p>" +
+        "<p>Find a comfortable position, relax your body, and focus on your breathing.</p>"
+      ).show();
+      $("#timer").text(formatTime(remaining));
+      $("#startBtn").hide();
+      $("#stopBtn").show();
+
+      countdown = setInterval(function () {
+        remaining--;
+        $("#timer").text(formatTime(remaining));
+        if (remaining <= 0) {
+          clearInterval(countdown);
+          $("#timer").text("Session complete — take a slow breath.");
+          $("#result").append("<p><b>Well done!</b> You completed your meditation session.</p>");
+          $("#startBtn").show();
+          $("#stopBtn").hide();
+        }
+      }, 1000);
+    });
+
+    $("#stopBtn").on("click", function () {
+      clearInterval(countdown);
+      $("#timer").text("Session ended. Take a moment before returning to your day.");
+      $("#startBtn").show();
+      $("#stopBtn").hide();
+    });
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      return String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+    }
+  </script>
+</body>
+</html>
